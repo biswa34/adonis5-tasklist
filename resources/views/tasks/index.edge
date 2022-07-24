@@ -1,0 +1,85 @@
+@layout('layouts/app')
+
+@set('title', 'Task')
+
+@section('content')
+<style>
+    .completed {
+        text-decoration: line-through;
+    }
+</style>
+
+<div class="columns">
+    <div class="column is-three-fifts is-offset-one-fifth">
+      <div class="box">
+        
+        @if(flashMessages.has('notification'))
+        <div class="notification is-success is-light">
+          {{flashMessages.get('notification')}}
+        </div>
+        @endif
+
+        <form action="{{ route('task.add') }}" method="post">
+            {{ csrfField() }}
+
+            <div class="field has-addons">
+                <div class="control is-expanded">
+                    <input class="input {{ flashMessages.get('errors.title') ? 'is-danger' : '' }}" 
+                    type="text" 
+                    name="title" 
+                    value="{{ flashMessages.get('title') || '' }}">
+
+                    @if(flashMessages.has('errors.title'))
+                    <p class="help is-danger">
+                      {{flashMessages.get('errors.title')}}
+                    </p>
+                    @endif
+                </div>
+
+                <div class="control">
+                    <button class="button is-link" type="submit">Add</button>
+                  </div>
+            </div>
+        </form>
+      </div>
+
+
+        <div class="box">
+            <table class="table is-fullwidth">
+                <tbody>
+                    @each(task in tasks)
+                    
+                    <tr>
+                    <td>
+                        <form action="{{ route('task.update', [task.id]) }}?_method=PATCH" method="POST">
+                            {{ csrfField() }}
+                            <label for="completed" class="checkbox">
+                                <input type="checkbox" name="completed" id="completed" onchange="this.form.submit()" {{task.isCompleted ? 'checked' : ''}}>
+                            </label>
+                            
+                        </form>
+                    </td>
+                        <td>
+                            <div class="{{ task.isCompleted ? 'completed' : '' }}">
+                                {{ task.title }}
+                            </div>
+                        
+                        </td>
+                    <td>
+                        <form action="{{ route('task.delete', [task.id]) }}?_method=DELETE" method="POST">
+                            {{ csrfField() }}
+                            <button type="submit" class="delete is-small"></button>
+                        </form>
+                    </td>
+                    </tr>
+                    @else
+                    <tr>
+                        <td colspan="3" class="has-text centered">No Tasks Listed</td>
+                    </tr>
+                    @endeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@endsection

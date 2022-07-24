@@ -1,0 +1,66 @@
+@layout('layouts/app')
+
+@set('title', 'Login')
+
+@section('content')
+
+
+<div class="columns">
+    <div class="column is-4 is-offset-4">
+      <div class="box">
+        <h2 class="title has-text-centered">Login</h2>
+
+        @if(flashMessages.has('notification'))
+        <div class="notification is-danger is-light">
+          {{flashMessages.get('notification')}}
+        </div>
+        @endif
+
+        <form action="{{ route('login') }}" method="post">
+            {{ csrfField() }}
+            
+
+              <div class="field">
+                <label class="label">Email</label>
+                <div class="control">
+                  <input class="input {{ flashMessages.get('errors.email') ? 'is-danger' : '' }}" 
+                         type="email" 
+                         placeholder="e.g. alex@example.com"
+                         name="email"
+                         value="{{ flashMessages.get('email') || '' }}">
+                </div>
+
+                @if(flashMessages.has('errors.email'))
+                <p class="help is-danger">
+                  {{flashMessages.get('errors.email')}}
+                </p>
+                @endif
+              </div>
+            
+              <div class="field">
+                <label class="label">Password</label>
+                <div class="control">
+                  <input class="input {{ flashMessages.get('errors.password') ? 'is-danger' : '' }}" 
+                         type="password" 
+                         placeholder="********"
+                         name="password"
+                         value="{{ flashMessages.get('password') || '' }}">
+                </div>
+
+                @if(flashMessages.has('errors.password'))
+                <p class="help is-danger">
+                  {{flashMessages.get('errors.password')}}
+                </p>
+                @endif
+              </div>
+
+
+              <div class="control">
+                <button class="button is-link is-fullwidth" type="submit"><i class="fa-solid fa-arrow-right-to-bracket mr-2"></i> Login</button>
+              </div>
+        </form>
+      </div>
+    </div>
+    
+  </div>
+@endsection
