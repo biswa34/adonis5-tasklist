@@ -5,6 +5,7 @@ import User from 'App/Models/User';
 
 export default class TasksController {
     public async index({view,auth}: HttpContextContract) {
+        /* Another Process of Fetching Tasks */
         //const tasks = await Task.query().where('user_id', auth.user?.id).orderBy('id', 'desc');
 
         const user = auth.user
@@ -29,6 +30,8 @@ export default class TasksController {
                 'title.maxLength': 'Task Title cannot exceed 255 characters'
             }
         })
+
+        /*Other Process to create and Save Lucid Models*/
 
         //await Task.create(validatedData)
         //await auth.user?.related('tasks').create(validatedData)
