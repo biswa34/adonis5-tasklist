@@ -39,4 +39,19 @@ Route.get('login', 'Auth/AuthController.loginShow').as('login.show').middleware(
 Route.post('register', 'Auth/AuthController.register').as('register');
 Route.post('login', 'Auth/AuthController.login').as('login');
 
+
+
+Route.group(() => {
+    Route.get('/', 'Admin/Auth/AuthController.loginShow').as('admin.login.show');
+    Route.get('register', 'Admin/Auth/AuthController.registerShow').as('admin.register.show');
+
+    Route.post('register', 'Admin/Auth/AuthController.register').as('admin.register');
+    Route.post('login', 'Admin/Auth/AuthController.login').as('admin.login');
+}).prefix('/admin')
+
+
+
 Route.post('logout', 'Auth/AuthController.logout').as('logout');
+
+
+
